@@ -6,10 +6,15 @@ const cors = require("cors");
 
 // Naming
 const app = express();
+const path = require("path");
 
 // Middlewares
 app.use(cors());
 app.use(express.json());
+
+// Static
+app.use(express.static("static"));
+app.use(express.static("files"));
 
 // Routes
 app.use("/home", home);
