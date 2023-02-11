@@ -11,14 +11,14 @@ app.use(express.json());
 app.use("/home", home);
 
 // connection
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || config.get("serverPort");
 
 (async () => {
   try {
     mongoose.connect(
       "mongodb+srv://admin:admin@cluster.k2yyl5n.mongodb.net/?retryWrites=true&w=majority"
     );
-    app.listen(PORT, () => console.log("Server started on port", PORT));
+    app.listen(PORT, () => console.log("Server started on port", config.get("serverPort")));
   } catch (error) {
     console.log(error);
   }
