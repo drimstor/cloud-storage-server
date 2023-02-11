@@ -18,10 +18,13 @@
     "config": "^3.3.9",
     "cors": "^2.8.5",
     "express": "^4.17.3",
+    "express-fileupload": "^1.4.0",
     "express-validator": "^6.14.3",
     "fs": "0.0.1-security",
+    "fs-extra": "^11.1.0",
     "jsonwebtoken": "^9.0.0",
-    "mongoose": "^6.9.1"
+    "mongoose": "^6.9.1",
+    "uuid": "^9.0.0"
   },
   "devDependencies": {
     "nodemon": "^2.0.15"

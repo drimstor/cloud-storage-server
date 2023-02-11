@@ -1,7 +1,7 @@
 const { createDir, deleteFile } = require("../services/fileService");
 const User = require("../models/User");
 const File = require("../models/File");
-const config = require("config");
+// const config = require("config");
 const fs = require("fs-extra");
 const Uuid = require("uuid");
 const {
@@ -87,20 +87,6 @@ class FileController {
         return res.status(400).json({ message: "File already exist" });
       }
 
-      async function getDocumentTextContent(uri) {
-        const response = await fetch(uri, { method: "GET" });
-        if (!response.ok)
-          throw new Error(
-            `Problem retrieving the resource. Error message: ${response.statusText}`
-          );
-        const dec = new TextDecoder("windows-1252"); //Here I can inform the desired charset
-        const arrBuffer = await response.arrayBuffer();
-        const ui8array = new Uint8Array(arrBuffer);
-        const text = dec.decode(ui8array);
-        console.log(text);
-        return text;
-      }
-
       file.mv(path);
 
       const dbFile = new File({
@@ -134,8 +120,7 @@ class FileController {
     try {
       const file = await File.findOne({ _id: req.query.id, user: req.user.id });
 
-      const path =
-        req.filePath + "\\" + req.user.id + "\\" + file.path;
+      const path = req.filePath + "\\" + req.user.id + "\\" + file.path;
 
       if (fs.existsSync(path)) {
         return res.download(path, file.name);
@@ -206,14 +191,14 @@ class FileController {
       const user = await User.findById(req.user.id);
 
       if (!!user.avatar) {
-        fs.rmSync(config.get("staticPath") + "\\" + user.avatar, {
+        fs.rmSync(req.filePath + "\\" + user.avatar, {
           recursive: true,
           force: true,
         });
       }
 
       const avatarName = Uuid.v4() + ".jpg";
-      file.mv(config.get("staticPath") + "\\" + avatarName);
+      file.mv(req.filePath + "\\" + avatarName);
       user.avatar = avatarName;
       await user.save();
       return res.json(user);
@@ -228,7 +213,7 @@ class FileController {
   async deleteAvatar(req, res) {
     try {
       const user = await User.findById(req.user.id);
-      fs.rmSync(config.get("staticPath") + "\\" + user.avatar, {
+      fs.rmSync(req.filePath + "\\" + user.avatar, {
         recursive: true,
         force: true,
       });
@@ -248,13 +233,11 @@ class FileController {
       const { id, newName } = req.body;
       const file = await File.findOne({ _id: id, user: req.user.id });
       file.name = newName;
-      const oldPath =
-        req.filePath + "\\" + req.user.id + "\\" + file.path;
+      const oldPath = req.filePath + "\\" + req.user.id + "\\" + file.path;
 
       await recourseRename(file, req.user.id, newName, 1);
 
-      const fullNewPath =
-        req.filePath + "\\" + req.user.id + "\\" + file.path;
+      const fullNewPath = req.filePath + "\\" + req.user.id + "\\" + file.path;
 
       if (fs.lstatSync(oldPath).isDirectory()) {
         fs.copySync(oldPath, fullNewPath);

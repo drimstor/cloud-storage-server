@@ -31,7 +31,7 @@ class AuthController {
         password: hashPassword,
         name,
       });
-      const token = jwt.sign({ id: user.id, email }, 'secretKey', {
+      const token = jwt.sign({ id: user.id, email }, "secretKey", {
         expiresIn: "1h",
       });
       await user.save();
@@ -71,7 +71,7 @@ class AuthController {
         return res.status(400).json({ message: "Invalid password" });
       }
 
-      const token = jwt.sign({ id: user.id, email }, 'secretKey', {
+      const token = jwt.sign({ id: user.id, email }, "secretKey", {
         expiresIn: "1h",
       });
 
@@ -100,7 +100,7 @@ class AuthController {
         id: req.user.id,
         email: req.user.email,
       });
-      const token = jwt.sign({ id: user.id, email: user.email }, 'secretKey', {
+      const token = jwt.sign({ id: user.id, email: user.email }, "secretKey", {
         expiresIn: "1h",
       });
 
