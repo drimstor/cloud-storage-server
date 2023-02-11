@@ -1,7 +1,6 @@
 const { createDir, deleteFile } = require("../services/fileService");
 const User = require("../models/User");
 const File = require("../models/File");
-// const config = require("config");
 const fs = require("fs-extra");
 const Uuid = require("uuid");
 const {

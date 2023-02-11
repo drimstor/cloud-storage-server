@@ -8,6 +8,7 @@ const fileRouter = require("./routes/file.routes");
 const fileUpload = require("express-fileupload");
 const filePathMiddleware = require("./middleware/filePath.middleware");
 const app = express();
+const PORT = process.env.PORT || 5000;
 
 // Middlewares
 app.use(cors());
@@ -24,7 +25,6 @@ app.use("/api/auth", authRouter);
 app.use("/api/files", fileRouter);
 
 // Connection
-const PORT = process.env.PORT || 5000;
 (async () => {
   try {
     mongoose.connect(

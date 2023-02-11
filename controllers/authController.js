@@ -2,8 +2,6 @@ const User = require("../models/User");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const { validationResult } = require("express-validator");
-// const config = require("config");
-// const secretKey = config.get("secretKey");
 const { createDir } = require("../services/fileService");
 const File = require("../models/File");
 
