@@ -9,7 +9,7 @@ const {
 } = require("../controllers/authController");
 
 router.post("/login", userLogin);
-// router.post("/registration", registrationValidate, userRegistration);
+router.post("/registration", registrationValidate, userRegistration);
 router.get("/auth", authMiddleware, checkAuth);
 
 module.exports = router;
