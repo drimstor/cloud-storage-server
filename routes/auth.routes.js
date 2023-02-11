@@ -10,6 +10,6 @@ const {
 
 router.post("/login", userLogin);
 // router.post("/registration", registrationValidate, userRegistration);
-// router.get("/auth", authMiddleware, checkAuth);
+router.get("/auth", authMiddleware, checkAuth);
 
 module.exports = router;
