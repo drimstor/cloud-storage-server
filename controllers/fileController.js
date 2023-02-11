@@ -190,14 +190,14 @@ class FileController {
       const user = await User.findById(req.user.id);
 
       if (!!user.avatar) {
-        fs.rmSync(req.filePath + "\\" + user.avatar, {
+        fs.rmSync(req.filePath + "\\" + req.user.id + "\\" + user.avatar, {
           recursive: true,
           force: true,
         });
       }
 
       const avatarName = Uuid.v4() + ".jpg";
-      file.mv(req.filePath + "\\" + avatarName);
+      file.mv(req.filePath + "\\" + req.user.id + "\\" + avatarName);
       user.avatar = avatarName;
       await user.save();
       return res.json(user);
@@ -212,7 +212,7 @@ class FileController {
   async deleteAvatar(req, res) {
     try {
       const user = await User.findById(req.user.id);
-      fs.rmSync(req.filePath + "\\" + user.avatar, {
+      fs.rmSync(req.filePath + "\\" + req.user.id + "\\" + user.avatar, {
         recursive: true,
         force: true,
       });

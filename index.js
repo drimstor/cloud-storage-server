@@ -13,7 +13,7 @@ const PORT = process.env.PORT || 5000;
 // Middlewares
 app.use(cors());
 app.use(express.json());
-app.use(filePathMiddleware(path.resolve(__dirname, "files")));
+app.use(filePathMiddleware(path.resolve(__dirname + "/files")));
 app.use(fileUpload({}));
 
 // Static
