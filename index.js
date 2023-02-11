@@ -3,10 +3,12 @@ const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
 const path = require("path");
+const config = require("config");
 const authRouter = require("./routes/auth.routes");
 const fileRouter = require("./routes/file.routes");
 const fileUpload = require("express-fileupload");
 const filePathMiddleware = require("./middleware/filePath.middleware");
+const dbUrl = config.get("dbUrl");
 const app = express();
 
 // Middlewares
@@ -24,12 +26,10 @@ app.use("/api/auth", authRouter);
 app.use("/api/files", fileRouter);
 
 // Connection
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || config.get("serverPort");
 (async () => {
   try {
-    mongoose.connect(
-      "mongodb+srv://admin:admin@cluster.k2yyl5n.mongodb.net/?retryWrites=true&w=majority"
-    );
+    mongoose.connect(dbUrl);
     app.listen(PORT, () => console.log("Server started on port", PORT));
   } catch (error) {
     console.log(error);
