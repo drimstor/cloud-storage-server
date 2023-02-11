@@ -3,10 +3,11 @@ const express = require("express");
 const home = require("./routes/home");
 const mongoose = require("mongoose");
 const cors = require("cors");
+const path = require("path");
+const authRouter = require("./routes/auth.routes");
 
 // Naming
 const app = express();
-const path = require("path");
 
 // Middlewares
 app.use(cors());
@@ -18,6 +19,8 @@ app.use(express.static("files"));
 
 // Routes
 app.use("/home", home);
+app.use("/api/auth", authRouter);
+// app.use("/api/files", fileRouter);
 
 // Connection
 const PORT = process.env.PORT || 5000;
