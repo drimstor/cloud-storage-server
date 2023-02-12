@@ -198,7 +198,7 @@ class FileController {
 
       const avatarName = Uuid.v4() + ".jpg";
       file.mv(req.filePath + "/" + req.user.id + "/" + avatarName);
-      user.avatar = avatarName;
+      user.avatar = req.user.id + "/" + avatarName;
       await user.save();
       return res.json(user);
     } catch (error) {
