@@ -2,7 +2,7 @@ const fs = require("fs");
 
 class FileService {
   createDir(req, file) {
-    const filePath = `${req.filePath}\\${file.user}\\${file.path}`;
+    const filePath = `${req.filePath}/${file.user}/${file.path}`;
     return new Promise((resolve, reject) => {
       try {
         if (!fs.existsSync(filePath)) {
@@ -20,7 +20,7 @@ class FileService {
   // -------------------------- //
 
   deleteFile(req, file) {
-    const path = `${req.filePath}\\${file.user}\\${file.path}`;
+    const path = `${req.filePath}/${file.user}/${file.path}`;
     fs.rmSync(path, { recursive: true, force: true });
   }
 }

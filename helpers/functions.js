@@ -15,9 +15,9 @@ function recourseDelete(currentFile, userId) {
 }
 
 async function recourseRename(currentFile, userId, newName, index) {
-  const pathArray = currentFile.path.split("\\");
+  const pathArray = currentFile.path.split("/");
   pathArray.splice(pathArray.length - index, 1, newName);
-  const newPath = pathArray.join("\\");
+  const newPath = pathArray.join("/");
   currentFile.path = newPath;
   await currentFile.save();
 

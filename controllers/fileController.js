@@ -23,7 +23,7 @@ class FileController {
       const parentFile = await File.findOne({ _id: parent });
 
       if (parentFile) {
-        file.path = `${parentFile.path}\\${file.name}`;
+        file.path = `${parentFile.path}/${file.name}`;
         parentFile.childs.push(file._id);
         await parentFile.save();
       } else {
@@ -78,9 +78,9 @@ class FileController {
         _id: req.body.parent,
       });
 
-      const path = `${req.filePath}\\${user._id}\\${
+      const path = `${req.filePath}/${user._id}/${
         parentFile ? parentFile.path : ""
-      }\\${file.name}`;
+      }/${file.name}`;
 
       if (fs.existsSync(path)) {
         return res.status(400).json({ message: "File already exist" });
@@ -92,7 +92,7 @@ class FileController {
         name: file.name,
         type: changeFormatType(file.name),
         size: file.size,
-        path: parentFile ? `${parentFile.path}\\${file.name}` : file.name,
+        path: parentFile ? `${parentFile.path}/${file.name}` : file.name,
         parent: parentFile ? parentFile._id : null,
         user: user._id,
         date: Date.now(),
@@ -119,7 +119,7 @@ class FileController {
     try {
       const file = await File.findOne({ _id: req.query.id, user: req.user.id });
 
-      const path = req.filePath + "\\" + req.user.id + "\\" + file.path;
+      const path = req.filePath + "/" + req.user.id + "/" + file.path;
 
       if (fs.existsSync(path)) {
         return res.download(path, file.name);
@@ -190,14 +190,14 @@ class FileController {
       const user = await User.findById(req.user.id);
 
       if (!!user.avatar) {
-        fs.rmSync(req.filePath + "\\" + req.user.id + "\\" + user.avatar, {
+        fs.rmSync(req.filePath + "/" + req.user.id + "/" + user.avatar, {
           recursive: true,
           force: true,
         });
       }
 
       const avatarName = Uuid.v4() + ".jpg";
-      file.mv(req.filePath + "\\" + req.user.id + "\\" + avatarName);
+      file.mv(req.filePath + "/" + req.user.id + "/" + avatarName);
       user.avatar = avatarName;
       await user.save();
       return res.json(user);
@@ -212,7 +212,7 @@ class FileController {
   async deleteAvatar(req, res) {
     try {
       const user = await User.findById(req.user.id);
-      fs.rmSync(req.filePath + "\\" + req.user.id + "\\" + user.avatar, {
+      fs.rmSync(req.filePath + "/" + req.user.id + "/" + user.avatar, {
         recursive: true,
         force: true,
       });
@@ -232,11 +232,11 @@ class FileController {
       const { id, newName } = req.body;
       const file = await File.findOne({ _id: id, user: req.user.id });
       file.name = newName;
-      const oldPath = req.filePath + "\\" + req.user.id + "\\" + file.path;
+      const oldPath = req.filePath + "/" + req.user.id + "/" + file.path;
 
       await recourseRename(file, req.user.id, newName, 1);
 
-      const fullNewPath = req.filePath + "\\" + req.user.id + "\\" + file.path;
+      const fullNewPath = req.filePath + "/" + req.user.id + "/" + file.path;
 
       if (fs.lstatSync(oldPath).isDirectory()) {
         fs.copySync(oldPath, fullNewPath);
