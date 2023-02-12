@@ -17,7 +17,6 @@ app.use(filePathMiddleware(path.resolve(__dirname, "files")));
 app.use(fileUpload({}));
 
 // Static
-// app.use(express.static("static"));
 app.use(express.static("files"));
 
 // Routes
