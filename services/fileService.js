@@ -1,6 +1,4 @@
 const fs = require("fs");
-const File = require("../models/File");
-// const config = require("config");
 
 class FileService {
   createDir(req, file) {
@@ -8,7 +6,7 @@ class FileService {
     return new Promise((resolve, reject) => {
       try {
         if (!fs.existsSync(filePath)) {
-          fs.mkdirSync(filePath);
+          fs.mkdirSync(filePath, { recursive: true });
           return resolve({ message: "File was created" });
         } else {
           return reject({ message: "File already exist" });
