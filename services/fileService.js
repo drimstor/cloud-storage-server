@@ -21,7 +21,19 @@ class FileService {
 
   deleteFile(req, file) {
     const path = `${req.filePath}/${file.user}/${file.path}`;
-    fs.rm(path, { recursive: true });
+
+    try {
+      fs.remove(path, { recursive: true });
+    } catch (error) {
+      alert(error);
+      console.log(error);
+    }
+
+    // fs.openSync(path, 'r+', (err, fd) => {
+
+    // })
+
+    // fs.rmSync(path, { recursive: true });
   }
 }
 
