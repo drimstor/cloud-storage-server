@@ -138,10 +138,14 @@ class FileController {
     try {
       const file = await File.findOne({ _id: req.query.id, user: req.user.id });
 
+      console.log(req.user.id);
+
       const parentFile = await File.findOne({
         _id: file.parent,
         user: req.user.id,
       });
+
+      console.log(file.user);
 
       if (!file) {
         return res.status(400).json({ message: "File not found" });

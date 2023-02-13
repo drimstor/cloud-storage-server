@@ -22,6 +22,8 @@ class FileService {
   deleteFile(req, file) {
     const path = `${req.filePath}/${file.user}/${file.path}`;
 
+    console.log(file.user);
+
     if (file.type !== "dir") {
       fs.unlink(path, (error) => {
         if (error) {
