@@ -161,7 +161,7 @@ class FileController {
         await parentFile.save();
       }
 
-      deleteFile(file);
+      deleteFile(req, file);
       await file.remove();
       return res.json({ message: "The file has been deleted" });
     } catch (error) {
