@@ -21,8 +21,17 @@ class FileService {
 
   deleteFile(req, file) {
     const path = `${req.filePath}/${file.user}/${file.path}`;
-    fs.rmSync(path, { recursive: true });
-    // fs.remove(path, { recursive: true });
+
+    if (file.type !== "dir") {
+      fs.unlink(path, (error) => {
+        if (error) {
+          console.error(`Error deleting file: ${error}`);
+        } else {
+          console.log(`Successfully deleted file: ${filePath}`);
+        }
+      });
+    }
+    // fs.rmSync(path, { recursive: true });
   }
 }
 
