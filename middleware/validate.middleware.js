@@ -4,8 +4,8 @@ const registrationValidate = [
   check("email", "Uncorrect email").isEmail(),
   check(
     "password",
-    "Password must be longer than 4 and shorter than 12"
-  ).isLength({ min: 4, max: 12 }),
+    "Password must be longer than 4"
+  ).isLength({ min: 4 }),
 ];
 
 module.exports = registrationValidate;

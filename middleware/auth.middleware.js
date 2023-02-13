@@ -1,6 +1,4 @@
 const jwt = require("jsonwebtoken");
-// const config = require("config");
-// const secretKey = config.get("secretKey");
 
 module.exports = (req, res, next) => {
   if (req.method === "OPTIONS") return next();
@@ -10,7 +8,7 @@ module.exports = (req, res, next) => {
     if (!token) {
       return res.status(401).json({ message: "Auth error" });
     }
-    const decoded = jwt.verify(token, 'secretKey');
+    const decoded = jwt.verify(token, "secretKey");
     req.user = decoded;
     next();
   } catch (e) {
