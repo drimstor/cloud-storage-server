@@ -229,7 +229,7 @@ class FileController {
         email: req.user.email,
       });
       const path = req.filePath + "/" + user.avatar;
-      fs.unlink(path);
+      await fs.unlink(path);
       user.avatar = "";
       await user.save();
       return res.json({
