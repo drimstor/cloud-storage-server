@@ -206,7 +206,14 @@ class FileController {
       file.mv(req.filePath + "/" + req.user.id + "/" + avatarName);
       user.avatar = req.user.id + "/" + avatarName;
       await user.save();
-      return res.json(user);
+      return res.json({
+        id: user.id,
+        email: user.email,
+        name: user.name,
+        diskSpace: user.diskSpace,
+        usedSpace: user.usedSpace,
+        avatar: user.avatar,
+      });
     } catch (error) {
       console.log(error);
       return res.status(500).json({ message: "Avatar upload error" });
@@ -225,7 +232,14 @@ class FileController {
       fs.unlink(path);
       user.avatar = "";
       await user.save();
-      return res.json(user);
+      return res.json({
+        id: user.id,
+        email: user.email,
+        name: user.name,
+        diskSpace: user.diskSpace,
+        usedSpace: user.usedSpace,
+        avatar: user.avatar,
+      });
     } catch (error) {
       console.log(error);
       return res.status(500).json({ message: "Avatar deletion error" });
