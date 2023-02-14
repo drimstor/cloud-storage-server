@@ -238,7 +238,6 @@ class FileController {
         name: user.name,
         diskSpace: user.diskSpace,
         usedSpace: user.usedSpace,
-        avatar: user.avatar,
       });
     } catch (error) {
       console.log(error);
