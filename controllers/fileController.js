@@ -187,7 +187,7 @@ class FileController {
   async uploadAvatar(req, res) {
     try {
       const file = req.files.file;
-      const user = await User.findById(req.user.id);
+      const user = await User.findOne({ id: req.user.id });
 
       if (!!user.avatar) {
         const path = `${req.filePath}/${user.avatar}`;
@@ -209,7 +209,7 @@ class FileController {
 
   async deleteAvatar(req, res) {
     try {
-      const user = await User.findById(req.user.id);
+      const user = await User.findOne({ id: req.user.id });
       const path = `${req.filePath}/${user.avatar}`;
       fs.unlink(path);
       user.avatar = "";
