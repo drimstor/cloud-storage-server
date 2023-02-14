@@ -191,7 +191,7 @@ class FileController {
 
       if (!!user.avatar) {
         const path = `${req.filePath}/${user.avatar}`;
-        fs.rmSync(path);
+        fs.unlink(path);
       }
 
       const avatarName = Uuid.v4() + ".jpg";
@@ -211,7 +211,7 @@ class FileController {
     try {
       const user = await User.findById(req.user.id);
       const path = `${req.filePath}/${user.avatar}`;
-      fs.rmSync(path);
+      fs.unlink(path);
       user.avatar = "";
       await user.save();
       return res.json(user);
