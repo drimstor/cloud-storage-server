@@ -191,11 +191,11 @@ class FileController {
 
       if (!!user.avatar) {
         const path = `${req.filePath}/${req.user.id}/${user.avatar}`;
-        fs.rmSync(path, { recursive: true });
+        fs.rmSync(path);
       }
 
       const avatarName = Uuid.v4() + ".jpg";
-      file.mv(req.filePath + "/" + req.user.id + "/" + avatarName);
+      file.mv(`${req.filePath}/${req.user.id}/${avatarName}`);
       user.avatar = req.user.id + "/" + avatarName;
       await user.save();
       return res.json(user);
@@ -211,7 +211,7 @@ class FileController {
     try {
       const user = await User.findById(req.user.id);
       const path = `${req.filePath}/${req.user.id}/${user.avatar}`;
-      fs.rmSync(path, { recursive: true });
+      fs.rmSync(path);
       user.avatar = "";
       await user.save();
       return res.json(user);
