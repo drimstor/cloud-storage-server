@@ -23,7 +23,7 @@ class FileController {
       const parentFile = await File.findOne({ _id: parent });
 
       if (parentFile) {
-        file.path = `${parentFile.path}/${file.name}`;
+        file.path = parentFile.path + "/" + file.name;
         parentFile.childs.push(file._id);
         await parentFile.save();
       } else {
@@ -78,9 +78,14 @@ class FileController {
         _id: req.body.parent,
       });
 
-      const path = `${req.filePath}/${user._id}/${
-        parentFile ? parentFile.path : ""
-      }/${file.name}`;
+      const path =
+        req.filePath +
+        "/" +
+        user._id +
+        "/" +
+        (parentFile ? parentFile.path : "") +
+        "/" +
+        file.name;
 
       if (fs.existsSync(path)) {
         return res.status(400).json({ message: "File already exist" });
@@ -187,15 +192,18 @@ class FileController {
   async uploadAvatar(req, res) {
     try {
       const file = req.files.file;
-      const user = await User.findOne({ id: req.user.id });
+      const user = await User.findOne({
+        id: req.user.id,
+        email: req.user.email,
+      });
 
       if (!!user.avatar) {
-        const path = `${req.filePath}/${user.avatar}`;
+        const path = req.filePath + "/" + user.avatar;
         fs.unlink(path);
       }
 
       const avatarName = Uuid.v4() + ".jpg";
-      file.mv(`${req.filePath}/${req.user.id}/${avatarName}`);
+      file.mv(req.filePath + "/" + req.user.id + "/" + avatarName);
       user.avatar = req.user.id + "/" + avatarName;
       await user.save();
       return res.json(user);
@@ -209,8 +217,11 @@ class FileController {
 
   async deleteAvatar(req, res) {
     try {
-      const user = await User.findOne({ id: req.user.id });
-      const path = `${req.filePath}/${user.avatar}`;
+      const user = await User.findOne({
+        id: req.user.id,
+        email: req.user.email,
+      });
+      const path = req.filePath + "/" + user.avatar;
       fs.unlink(path);
       user.avatar = "";
       await user.save();
