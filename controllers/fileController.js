@@ -190,7 +190,7 @@ class FileController {
       const user = await User.findById(req.user.id);
 
       if (!!user.avatar) {
-        const path = `${req.filePath}/${req.user.id}/${user.avatar}`;
+        const path = `${req.filePath}/${user.avatar}`;
         fs.rmSync(path);
       }
 
@@ -210,7 +210,7 @@ class FileController {
   async deleteAvatar(req, res) {
     try {
       const user = await User.findById(req.user.id);
-      const path = `${req.filePath}/${req.user.id}/${user.avatar}`;
+      const path = `${req.filePath}/${user.avatar}`;
       fs.rmSync(path);
       user.avatar = "";
       await user.save();
