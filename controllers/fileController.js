@@ -129,7 +129,6 @@ class FileController {
       if (fs.existsSync(path)) {
         return res.download(path, file.name);
       }
-
       return res.status(400).json({ message: "Download error" });
     } catch (error) {
       console.log(error);
@@ -197,7 +196,7 @@ class FileController {
         email: req.user.email,
       });
 
-      if (!!user.avatar) {
+      if (user.avatar) {
         const path = req.filePath + "/" + user.avatar;
         fs.unlink(path);
       }
@@ -270,6 +269,43 @@ class FileController {
     } catch (error) {
       console.log(error);
       return res.status(500).json({ message: "Rename error" });
+    }
+  }
+
+  // -------------------------- //
+
+  async calculateFiles(req, res) {
+    try {
+      const types = ["media", "picture", "file"];
+
+      const filesSizes = {
+        media: 0,
+        picture: 0,
+        file: 0,
+        total: 0,
+      };
+
+      types.forEach(async (type) => {
+        const filesOneOfType = await File.find({
+          user: req.user.id,
+          type: type,
+        });
+
+        console.log(filesOneOfType);
+
+        filesOneOfType.forEach((file) => {
+          filesSizes[type] += file.size;
+          filesSizes.total += file.size;
+          console.log(file);
+        });
+      });
+
+      console.log(filesSizes);
+
+      return res.json(filesSizes);
+    } catch (error) {
+      console.log(error);
+      return res.status(500).json({ message: "File calculation error" });
     }
   }
 }

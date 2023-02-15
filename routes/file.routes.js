@@ -11,11 +11,13 @@ const {
   uploadAvatar,
   deleteAvatar,
   renameFile,
+  calculateFiles,
 } = require("../controllers/fileController");
 
 router.get("", authMiddleware, getFiles);
 router.get("/download", authMiddleware, downloadFile);
 router.get("/search", authMiddleware, searchFile);
+router.get("/calculate", authMiddleware, calculateFiles);
 router.post("", authMiddleware, createDir);
 router.post("/upload", authMiddleware, uploadFile);
 router.post("/avatar", authMiddleware, uploadAvatar);
