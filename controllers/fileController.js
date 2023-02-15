@@ -297,8 +297,6 @@ class FileController {
         }
       }
 
-      console.log(filesSizes);
-
       return res.json(filesSizes);
     } catch (error) {
       console.log(error);
