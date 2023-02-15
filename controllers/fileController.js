@@ -285,19 +285,18 @@ class FileController {
         total: 0,
       };
 
-      for (const type of types) {
-        const filesOneOfType = await File.find({
-          user: req.user.id,
-          type: type,
-        });
+      // for (const type of types) {
+      //   const filesOneOfType = await File.find({
+      //     user: req.user.id,
+      //     type: type,
+      //   });
 
-        for (const file of filesOneOfType) {
-          filesSizes[type] += file.size;
-          filesSizes.total += file.size;
-        }
-      }
+      //   for (const file of filesOneOfType) {
+      //     filesSizes[type] += file.size;
+      //     filesSizes.total += file.size;
+      //   }
+      // }
 
-      
       console.log(filesSizes);
 
       return res.json(filesSizes);
