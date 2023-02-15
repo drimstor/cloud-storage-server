@@ -61,10 +61,10 @@ class FileController {
       const file = req.files.file;
       const user = await User.findOne({ _id: req.user.id });
 
-      if (file.size >= 2147483647) {
+      if (file.size >= 1024 ** 3 * 1) {
         return res
           .status(400)
-          .json({ message: "File size must not exceed 2GB" });
+          .json({ message: "File size must not exceed 1GB" });
       }
 
       if (user.usedSpace + file.size > user.diskSpace) {
