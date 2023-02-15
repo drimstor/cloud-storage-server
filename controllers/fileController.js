@@ -278,27 +278,24 @@ class FileController {
     try {
       const types = ["media", "picture", "file"];
 
-      const filesSizes = {
+      let filesSizes = {
         media: 0,
         picture: 0,
         file: 0,
         total: 0,
       };
 
-      types.forEach(async (type) => {
+      for (const type of types) {
         const filesOneOfType = await File.find({
           user: req.user.id,
           type: type,
         });
 
-        console.log(filesOneOfType);
-
-        filesOneOfType.forEach((file) => {
+        for (const file of filesOneOfType) {
           filesSizes[type] += file.size;
           filesSizes.total += file.size;
-          console.log(file);
-        });
-      });
+        }
+      }
 
       console.log(filesSizes);
 
