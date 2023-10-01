@@ -5,6 +5,8 @@ const cors = require("cors");
 const path = require("path");
 const authRouter = require("./routes/auth.routes");
 const fileRouter = require("./routes/file.routes");
+const postsRouter = require("./routes/posts.routes");
+const commentsRouter = require("./routes/comments.routes");
 const fileUpload = require("express-fileupload");
 const filePathMiddleware = require("./middleware/filePath.middleware");
 const app = express();
@@ -22,6 +24,8 @@ app.use(express.static("files"));
 // Routes
 app.use("/api/auth", authRouter);
 app.use("/api/files", fileRouter);
+app.use("/api/posts", postsRouter);
+app.use("/api/comments", commentsRouter);
 
 // Connection
 (async () => {

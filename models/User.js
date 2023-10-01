@@ -8,6 +8,7 @@ const User = new Schema({
   usedSpace: { type: Number, default: 0 },
   avatar: { type: String },
   files: [{ type: ObjectId, ref: "File" }],
+  posts: { type: Number, default: 0 },
 });
 
 module.exports = model("User", User);

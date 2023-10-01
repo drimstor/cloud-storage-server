@@ -44,6 +44,7 @@ class AuthController {
           name: user.name,
           diskSpace: user.diskSpace,
           usedSpace: user.usedSpace,
+          posts: user.posts,
         },
       });
     } catch (error) {
@@ -83,6 +84,7 @@ class AuthController {
           diskSpace: user.diskSpace,
           usedSpace: user.usedSpace,
           avatar: user.avatar,
+          posts: user.posts,
         },
       });
     } catch (error) {
@@ -112,6 +114,7 @@ class AuthController {
           diskSpace: user.diskSpace,
           usedSpace: user.usedSpace,
           avatar: user.avatar,
+          posts: user.posts,
         },
       });
     } catch (error) {
