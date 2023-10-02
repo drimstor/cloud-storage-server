@@ -71,10 +71,11 @@ class postsController {
 
   async updatePost(req, res) {
     try {
-      const { text } = req.body;
+      const { text, liked } = req.body;
 
       const post = await Post.findOne({ id: req.query.id });
       post.text = text;
+      post.liked = liked;
       await post.save();
 
       return res.json({ message: "The post has been updated" });
