@@ -2,6 +2,8 @@ const Post = require("../models/Post");
 const User = require("../models/User");
 const Uuid = require("uuid");
 const fs = require("fs-extra");
+const Comment = require("../models/Comment");
+const { deleteUserContent } = require("../helpers/functions");
 
 class postsController {
   async getPost(req, res) {
@@ -55,12 +57,15 @@ class postsController {
       user.posts -= 1;
       await user.save();
 
-      const post = await Post.findOne({ id: req.query.id });
-      if (post.image) {
-        const path = req.filePath + "/" + post.image;
-        await fs.unlink(path);
-      }
+      const post = await Post.findOne({ _id: req.query.id });
+      deleteUserContent(Post, req.query.id);
       await post.remove();
+
+      const comments = await Comment.find({ postId: post._id });
+      comments.forEach(async (item) => {
+        await deleteUserContent(Comment, item._id);
+      });
+      await Comment.deleteMany({ postId: post._id });
 
       return res.json({ message: "The post has been deleted" });
     } catch (error) {
@@ -73,7 +78,7 @@ class postsController {
     try {
       const { text, liked } = req.body;
 
-      const post = await Post.findOne({ id: req.query.id });
+      const post = await Post.findOne({ _id: req.query.id });
       post.text = text;
       post.liked = liked;
       await post.save();

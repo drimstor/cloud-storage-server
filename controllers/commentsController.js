@@ -1,8 +1,7 @@
-const Post = require("../models/Post");
 const Comment = require("../models/Comment");
 const User = require("../models/User");
 const Uuid = require("uuid");
-const fs = require("fs-extra");
+const { deleteUserContent } = require("../helpers/functions");
 
 class commentsController {
   async getComments(req, res) {
@@ -52,17 +51,9 @@ class commentsController {
 
   async deleteComment(req, res) {
     try {
-      const user = await User.findOne({ id: req.user.id });
-      user.posts -= 1;
-      await user.save();
-
-      const post = await Post.findOne({ id: req.query.id });
-      if (post.image) {
-        const path = req.filePath + "/" + post.image;
-        await fs.unlink(path);
-      }
-      await post.remove();
-
+      const comment = await Comment.findOne({ _id: req.query.id });
+      deleteUserContent(Comment, req.query.id);
+      await comment.remove();
       return res.json({ message: "The post has been deleted" });
     } catch (error) {
       console.log(error);
@@ -74,12 +65,12 @@ class commentsController {
     try {
       const { text, liked } = req.body;
 
-      const post = await Post.findOne({ id: req.query.id });
-      post.text = text;
-      post.liked = liked;
-      await post.save();
+      const comment = await Comment.findOne({ _id: req.query.id });
+      comment.text = text;
+      comment.liked = liked;
+      await comment.save();
 
-      return res.json({ message: "The post has been updated" });
+      return res.json({ message: "The comment has been updated" });
     } catch (error) {
       console.log(error);
       return res.status(500).json({ message: "Post updated error" });

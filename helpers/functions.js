@@ -1,4 +1,5 @@
 const File = require("../models/File");
+const fs = require("fs-extra");
 const { pictureFormats, mediaFormats } = require("./constants");
 
 function recourseDelete(currentFile, userId) {
@@ -37,4 +38,18 @@ function changeFormatType(fileName) {
   return type;
 }
 
-module.exports = { recourseDelete, recourseRename, changeFormatType };
+async function deleteUserContent(element, id) {
+  const content = await element.findOne({ _id: id });
+
+  if (content?.image) {
+    const path = req.filePath + "/" + content?.image;
+    await fs.unlink(path);
+  }
+}
+
+module.exports = {
+  recourseDelete,
+  recourseRename,
+  changeFormatType,
+  deleteUserContent,
+};

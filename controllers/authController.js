@@ -102,7 +102,7 @@ class AuthController {
         email: req.user.email,
       });
       const token = jwt.sign({ id: user.id, email: user.email }, "secretKey", {
-        expiresIn: "1h",
+        expiresIn: "8h",
       });
 
       return res.json({
