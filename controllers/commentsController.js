@@ -1,6 +1,7 @@
 const Comment = require("../models/Comment");
 const User = require("../models/User");
 const Uuid = require("uuid");
+const fs = require("fs-extra");
 
 class commentsController {
   async getComments(req, res) {
@@ -53,15 +54,17 @@ class commentsController {
       const comment = await Comment.findOne({ _id: req.query.id });
 
       if (comment?.image) {
-        const path = req.filePath + "/" + comment?.image;
+        const path = req.filePath + "/" + comment.image;
         await fs.unlink(path);
       }
 
+      console.log(comment);
+
       await comment.remove();
-      return res.json({ message: "The post has been deleted" });
+      return res.json({ message: "The comment has been deleted" });
     } catch (error) {
       console.log(error);
-      return res.status(500).json({ message: "Post deletion error" });
+      return res.status(500).json({ message: "Comment deletion error" });
     }
   }
 
@@ -77,7 +80,7 @@ class commentsController {
       return res.json({ message: "The comment has been updated" });
     } catch (error) {
       console.log(error);
-      return res.status(500).json({ message: "Post updated error" });
+      return res.status(500).json({ message: "Comment updated error" });
     }
   }
 }
