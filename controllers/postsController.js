@@ -3,7 +3,6 @@ const User = require("../models/User");
 const Uuid = require("uuid");
 const fs = require("fs-extra");
 const Comment = require("../models/Comment");
-const { deleteUserContent } = require("../helpers/functions");
 
 class postsController {
   async getPost(req, res) {
@@ -58,15 +57,26 @@ class postsController {
       await user.save();
 
       const post = await Post.findOne({ _id: req.query.id });
-      deleteUserContent(Post, req.query.id);
-      await post.remove();
+
+      if (post?.image) {
+        const path = req.filePath + "/" + post.image;
+        await fs.unlink(path);
+      }
 
       const comments = await Comment.find({ postId: post._id });
+
       comments.forEach(async (item) => {
-        await deleteUserContent(Comment, item._id);
+        const comment = await Comment.findOne({ _id: item._id });
+
+        if (comment?.image) {
+          const path = req.filePath + "/" + comment.image;
+          await fs.unlink(path);
+        }
       });
+
       await Comment.deleteMany({ postId: post._id });
 
+      await post.remove();
       return res.json({ message: "The post has been deleted" });
     } catch (error) {
       console.log(error);

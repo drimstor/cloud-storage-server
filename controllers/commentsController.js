@@ -1,7 +1,6 @@
 const Comment = require("../models/Comment");
 const User = require("../models/User");
 const Uuid = require("uuid");
-const { deleteUserContent } = require("../helpers/functions");
 
 class commentsController {
   async getComments(req, res) {
@@ -52,7 +51,12 @@ class commentsController {
   async deleteComment(req, res) {
     try {
       const comment = await Comment.findOne({ _id: req.query.id });
-      deleteUserContent(Comment, req.query.id);
+
+      if (comment?.image) {
+        const path = req.filePath + "/" + comment?.image;
+        await fs.unlink(path);
+      }
+
       await comment.remove();
       return res.json({ message: "The post has been deleted" });
     } catch (error) {
