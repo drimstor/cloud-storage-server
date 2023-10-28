@@ -2,11 +2,11 @@ const socketIo = require("socket.io");
 
 function webSocketController(server) {
   const io = socketIo(server, {
-    cors: {
-      origin: "*", // Allow requests from any origin
-      methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
-      credentials: true, // Allow credentials (e.g., cookies, HTTP authentication) to be sent with requests
-    },
+    // cors: {
+    //   origin: "*", // Allow requests from any origin
+    //   methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
+    //   credentials: true, // Allow credentials (e.g., cookies, HTTP authentication) to be sent with requests
+    // },
   });
 
   io.on("connection", (socket) => {
