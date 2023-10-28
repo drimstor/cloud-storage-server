@@ -10,17 +10,14 @@ function webSocketController(server) {
     },
   });
 
-  io.engine.on("headers", (headers, request) => {
-    // Установите заголовок CORS вручную для запросов polling
-    headers["Access-Control-Allow-Origin"] = "*";
-    headers["Access-Control-Allow-Methods"] = "GET,HEAD,PUT,PATCH,POST,DELETE";
-    headers["Access-Control-Allow-Headers"] = "Content-Type";
-    headers["Access-Control-Allow-Credentials"] = true;
-  });
-
   // io.use(cors());
 
   io.on("connection", (socket) => {
+    socket.handshake.headers["Access-Control-Allow-Origin"] = "*";
+    socket.handshake.headers["Access-Control-Allow-Methods"] =
+      "GET,HEAD,PUT,PATCH,POST,DELETE";
+    socket.handshake.headers["Access-Control-Allow-Headers"] = "Content-Type";
+
     // console.log("New client connected: " + socket.id);
     socket.on("user-connected", (user) => {
       socket.broadcast.emit("user-connected", user);
