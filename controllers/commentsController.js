@@ -7,9 +7,11 @@ class commentsController {
   async getComments(req, res) {
     try {
       const { limit, postId } = req.query;
+
       const comment = await Comment.find({ postId })
         .limit(limit)
         .sort({ date: 1 });
+
       return res.json(comment);
     } catch (error) {
       console.log(error);
@@ -19,7 +21,7 @@ class commentsController {
 
   async addComment(req, res) {
     try {
-      const user = await User.findOne({ id: req.user.id });
+      const user = await User.findOne({ _id: req.user.id });
 
       if (!user) return res.status(404).json({ message: "User not found" });
 
@@ -42,7 +44,7 @@ class commentsController {
       });
 
       await comment.save();
-      return res.json({ message: "The comment has been created" });
+      return res.json({ message: "Comment created" });
     } catch (error) {
       console.log(error);
       return res.status(500).json({ message: "Comment upload error" });
@@ -58,10 +60,8 @@ class commentsController {
         await fs.unlink(path);
       }
 
-      console.log(comment);
-
       await comment.remove();
-      return res.json({ message: "The comment has been deleted" });
+      return res.json({ message: "Comment deleted" });
     } catch (error) {
       console.log(error);
       return res.status(500).json({ message: "Comment deletion error" });
@@ -77,7 +77,7 @@ class commentsController {
       comment.liked = liked;
       await comment.save();
 
-      return res.json({ message: "The comment has been updated" });
+      return res.json({ message: "Comment updated" });
     } catch (error) {
       console.log(error);
       return res.status(500).json({ message: "Comment updated error" });

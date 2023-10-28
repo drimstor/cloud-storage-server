@@ -8,7 +8,7 @@ const {
   updateComment,
 } = require("../controllers/commentsController");
 
-router.get("", getComments);
+router.get("", authMiddleware, getComments);
 router.post("/add", authMiddleware, addComment);
 router.delete("", authMiddleware, deleteComment);
 router.put("", authMiddleware, updateComment);

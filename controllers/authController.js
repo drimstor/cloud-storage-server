@@ -97,10 +97,7 @@ class AuthController {
 
   async checkAuth(req, res) {
     try {
-      const user = await User.findOne({
-        id: req.user.id,
-        email: req.user.email,
-      });
+      const user = await User.findOne({ email: req.user.email });
       const token = jwt.sign({ id: user.id, email: user.email }, "secretKey", {
         expiresIn: "8h",
       });

@@ -8,7 +8,7 @@ const {
   updatePost,
 } = require("../controllers/postsController");
 
-router.get("", getPost);
+router.get("", authMiddleware, getPost);
 router.post("/add", authMiddleware, addPost);
 router.delete("", authMiddleware, deletePost);
 router.put("", authMiddleware, updatePost);
